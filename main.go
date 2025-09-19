@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"iter"
 	"math"
 	"math/big"
 	"math/rand/v2"
@@ -19,20 +20,22 @@ func (p Point) InsideUnitCircle() bool {
 
 // GeneratePoints generates random points within the unit square.
 // It returns a channel of Point structs and a cancel function which stops the generation.
-func GeneratePoints() (<-chan Point, func()) {
-	points := make(chan Point)
+func GeneratePoints() (iter.Seq[Point], func()) {
 	done := make(chan struct{})
 
-	go func() {
-		defer close(points)
+	points := func(yield func(Point) bool) {
 		for {
 			select {
 			case <-done:
 				return
-			case points <- Point{X: rand.Float64(), Y: rand.Float64()}:
+			default:
+				ok := yield(Point{X: rand.Float64(), Y: rand.Float64()})
+				if !ok {
+					return
+				}
 			}
 		}
-	}()
+	}
 
 	return points, func() { close(done) }
 }
@@ -50,7 +53,7 @@ func DivideUint64(numerator, denominator uint64) float64 {
 // EstimatePi estimates the value of π using Monte Carlo simulation.
 // It returns the estimated value of π and the number of iterations performed.
 // It stops when it reaches math.MaxUint64 iterations or when the source of points is exhausted.
-func EstimatePi(points <-chan Point, reportProgress func(uint64)) (pi float64, iterations uint64) {
+func EstimatePi(points iter.Seq[Point], reportProgress func(uint64)) (pi float64, iterations uint64) {
 	var totalPoints, insidePoints uint64
 
 	for point := range points {
@@ -71,10 +74,10 @@ func main() {
 	points, cancelGeneration := GeneratePoints()
 
 	pi, iterations := EstimatePi(points, func(iteration uint64) {
-		if iteration%1_000_000 == 0 {
+		if iteration%10_000_000 == 0 {
 			print(".")
 		}
-		if iteration == 100_000_000 {
+		if iteration == 1_000_000_000 {
 			cancelGeneration()
 		}
 	})
