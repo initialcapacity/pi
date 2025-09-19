@@ -5,6 +5,7 @@ import (
 	"iter"
 	"math/big"
 	"math/rand/v2"
+	"time"
 )
 
 // Point represents a point in 2D space.
@@ -60,6 +61,7 @@ func EstimatePi(points iter.Seq[Point], keepGoing func(uint64) bool) (pi float64
 }
 
 func main() {
+	start := time.Now()
 	points := GeneratePoints()
 	pi, iterations := EstimatePi(points, func(iteration uint64) bool {
 		if iteration%10_000_000 == 0 {
@@ -68,5 +70,6 @@ func main() {
 		return iteration < 1_000_000_000
 	})
 
-	fmt.Printf("\nπ ≈ %.12f (n=%d)\n", pi, iterations)
+	elapsed := time.Since(start)
+	fmt.Printf("\nπ ≈ %.12f (n=%d, %s)\n", pi, iterations, elapsed)
 }
