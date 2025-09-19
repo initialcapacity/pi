@@ -5,6 +5,9 @@ import (
 	"iter"
 	"math/big"
 	"math/rand/v2"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -72,13 +75,21 @@ func ExecutionTime(description string) func() {
 
 func main() {
 	defer ExecutionTime("Estimation")()
+	sigtermChannel := make(chan os.Signal, 1)
+	signal.Notify(sigtermChannel, os.Interrupt, syscall.SIGTERM)
 
 	points := GeneratePoints()
 	pi, iterations := EstimatePi(points, func(iteration uint64) bool {
 		if iteration%10_000_000 == 0 {
 			print(".")
 		}
-		return iteration < 1_000_000_000
+
+		select {
+		case <-sigtermChannel:
+			return false
+		default:
+			return iteration < 1_000_000_000
+		}
 	})
 
 	fmt.Printf("\nπ ≈ %.12f (n=%d)\n", pi, iterations)
