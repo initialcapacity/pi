@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"iter"
-	"math"
 	"math/big"
 	"math/rand/v2"
 )
@@ -19,25 +18,16 @@ func (p Point) InsideUnitCircle() bool {
 }
 
 // GeneratePoints generates random points within the unit square.
-// It returns a channel of Point structs and a cancel function which stops the generation.
-func GeneratePoints() (iter.Seq[Point], func()) {
-	done := make(chan struct{})
-
-	points := func(yield func(Point) bool) {
+// It returns an iterable sequence of Point structs.
+func GeneratePoints() iter.Seq[Point] {
+	return func(yield func(Point) bool) {
 		for {
-			select {
-			case <-done:
+			ok := yield(Point{X: rand.Float64(), Y: rand.Float64()})
+			if !ok {
 				return
-			default:
-				ok := yield(Point{X: rand.Float64(), Y: rand.Float64()})
-				if !ok {
-					return
-				}
 			}
 		}
 	}
-
-	return points, func() { close(done) }
 }
 
 // DivideUint64 divides two uint64 numbers and returns the result as a float64.
@@ -52,8 +42,8 @@ func DivideUint64(numerator, denominator uint64) float64 {
 
 // EstimatePi estimates the value of π using Monte Carlo simulation.
 // It returns the estimated value of π and the number of iterations performed.
-// It stops when it reaches math.MaxUint64 iterations or when the source of points is exhausted.
-func EstimatePi(points iter.Seq[Point], reportProgress func(uint64)) (pi float64, iterations uint64) {
+// It stops when the keepGoing parameter returns false.
+func EstimatePi(points iter.Seq[Point], keepGoing func(uint64) bool) (pi float64, iterations uint64) {
 	var totalPoints, insidePoints uint64
 
 	for point := range points {
@@ -61,8 +51,7 @@ func EstimatePi(points iter.Seq[Point], reportProgress func(uint64)) (pi float64
 		if point.InsideUnitCircle() {
 			insidePoints++
 		}
-		reportProgress(totalPoints)
-		if totalPoints == math.MaxUint64 {
+		if !keepGoing(totalPoints) {
 			break
 		}
 	}
@@ -71,15 +60,12 @@ func EstimatePi(points iter.Seq[Point], reportProgress func(uint64)) (pi float64
 }
 
 func main() {
-	points, cancelGeneration := GeneratePoints()
-
-	pi, iterations := EstimatePi(points, func(iteration uint64) {
+	points := GeneratePoints()
+	pi, iterations := EstimatePi(points, func(iteration uint64) bool {
 		if iteration%10_000_000 == 0 {
 			print(".")
 		}
-		if iteration == 1_000_000_000 {
-			cancelGeneration()
-		}
+		return iteration < 1_000_000_000
 	})
 
 	fmt.Printf("\nπ ≈ %.12f (n=%d)\n", pi, iterations)
