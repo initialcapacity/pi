@@ -60,8 +60,19 @@ func EstimatePi(points iter.Seq[Point], keepGoing func(uint64) bool) (pi float64
 	return DivideUint64(insidePoints, totalPoints) * 4, totalPoints
 }
 
-func main() {
+// ExecutionTime measures time between when it is called and when the function it returns is called
+// and prints the result.
+func ExecutionTime(description string) func() {
 	start := time.Now()
+	return func() {
+		elapsed := time.Since(start)
+		fmt.Printf("%s took %s\n", description, elapsed)
+	}
+}
+
+func main() {
+	defer ExecutionTime("Estimation")()
+
 	points := GeneratePoints()
 	pi, iterations := EstimatePi(points, func(iteration uint64) bool {
 		if iteration%10_000_000 == 0 {
@@ -70,6 +81,5 @@ func main() {
 		return iteration < 1_000_000_000
 	})
 
-	elapsed := time.Since(start)
-	fmt.Printf("\nπ ≈ %.12f (n=%d, %s)\n", pi, iterations, elapsed)
+	fmt.Printf("\nπ ≈ %.12f (n=%d)\n", pi, iterations)
 }
