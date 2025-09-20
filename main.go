@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"iter"
 	"math/big"
@@ -74,6 +75,10 @@ func ExecutionTime(description string) func() {
 }
 
 func main() {
+	var maxIterations uint64
+	flag.Uint64Var(&maxIterations, "n", 1_000_000_000, "maximum number of iterations")
+	flag.Parse()
+
 	defer ExecutionTime("Estimation")()
 	sigtermChannel := make(chan os.Signal, 1)
 	signal.Notify(sigtermChannel, os.Interrupt, syscall.SIGTERM)
@@ -88,7 +93,7 @@ func main() {
 		case <-sigtermChannel:
 			return false
 		default:
-			return iteration < 1_000_000_000
+			return iteration < maxIterations
 		}
 	})
 
