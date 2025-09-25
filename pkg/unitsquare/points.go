@@ -13,9 +13,11 @@ type Point struct {
 func GeneratePoints(ctx context.Context) iter.Seq[Point] {
 	return func(yield func(Point) bool) {
 		for {
-			ok := yield(Point{X: rand.Float64(), Y: rand.Float64()})
-			if !ok {
-				return
+			for _ = range 1000 {
+				ok := yield(Point{X: rand.Float64(), Y: rand.Float64()})
+				if !ok {
+					return
+				}
 			}
 			select {
 			case <-ctx.Done():
