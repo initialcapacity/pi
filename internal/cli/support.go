@@ -7,11 +7,10 @@ import (
 	"os"
 	"os/signal"
 	"runtime"
+	"strconv"
+	"strings"
 	"syscall"
 	"time"
-
-	"golang.org/x/text/language"
-	"golang.org/x/text/message"
 )
 
 func ExecutionTimer(description string) func() {
@@ -41,7 +40,19 @@ func ParseCommandLineArgs() (duration, numberOfWorkers int) {
 	return duration, numberOfWorkers
 }
 
-func Report(pi float64, iterations int) {
-	printer := message.NewPrinter(language.English)
-	printer.Printf("π ≈ %.12f (%d iterations)\n", pi, iterations)
+func prettyPrint(integer int) string {
+	stringRepresentation := strconv.Itoa(integer)
+	var formatted strings.Builder
+	for i, r := range stringRepresentation {
+		if i > 0 && (len(stringRepresentation)-i)%3 == 0 {
+			formatted.WriteRune(',')
+		}
+		formatted.WriteRune(r)
+	}
+
+	return formatted.String()
+}
+
+func Report(pi float64, iterations int) string {
+	return fmt.Sprintf("π ≈ %.12f (%s iterations)", pi, prettyPrint(iterations))
 }

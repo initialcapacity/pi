@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/tygern/pi/internal/cli"
@@ -16,5 +17,5 @@ func main() {
 	defer done()
 
 	pi, iterations := pi.Estimate(ctx, numberOfWorkers)
-	cli.Report(pi, int(iterations))
+	fmt.Println(cli.Report(pi, int(iterations)))
 }
