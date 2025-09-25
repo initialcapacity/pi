@@ -14,6 +14,8 @@ import (
 	"sync/atomic"
 	"syscall"
 	"time"
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
 )
 
 type Point struct {
@@ -110,6 +112,7 @@ func main() {
 	done := ExecutionTimer("Estimation")
 	defer done()
 
+	p := message.NewPrinter(language.English)
 	pi, iterations := EstimatePi(ctx, numberOfWorkers)
-	fmt.Printf("π ≈ %.12f (n=%d)\n", pi, iterations)
+	p.Printf("π ≈ %.12f (%d iterations)\n", pi, iterations)
 }
