@@ -13,5 +13,8 @@ jobs:
         with:
           go-version-file: "go.mod"
       - name: Run tests
-        run: go test ./...
+        run: |
+          gofmt -d .
+          go vet ./...
+          go test ./...
   

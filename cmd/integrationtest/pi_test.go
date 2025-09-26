@@ -13,7 +13,7 @@ import (
 func TestIntegration(t *testing.T) {
 	prepareBuildDirectory(t)
 	build(t, "pi")
-	
+
 	testCtx, cancelCtx := context.WithCancel(t.Context())
 	defer cancelCtx()
 
