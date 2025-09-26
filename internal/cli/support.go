@@ -40,7 +40,7 @@ func ParseCommandLineArgs() (duration, numberOfWorkers int) {
 	return duration, numberOfWorkers
 }
 
-func prettyPrint(integer int) string {
+func PrettyPrint(integer int) string {
 	stringRepresentation := strconv.Itoa(integer)
 	var formatted strings.Builder
 	for i, r := range stringRepresentation {
@@ -54,5 +54,5 @@ func prettyPrint(integer int) string {
 }
 
 func Report(pi float64, iterations int) string {
-	return fmt.Sprintf("π ≈ %.12f (%s iterations)", pi, prettyPrint(iterations))
+	return fmt.Sprintf("π ≈ %.12f (%s iterations)", pi, PrettyPrint(iterations))
 }

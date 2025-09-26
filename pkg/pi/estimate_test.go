@@ -41,9 +41,9 @@ func TestEstimatePi(t *testing.T) {
 			{X: .2, Y: .1},
 		})
 	}
-	
+
 	pi, iterations := pi.Estimate(t.Context(), generate, 2)
-	
+
 	assert.Equal(t, 10, iterations)
 	assert.Equal(t, 2.4, pi)
 }

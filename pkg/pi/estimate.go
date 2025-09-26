@@ -10,7 +10,6 @@ import (
 	"github.com/tygern/pi/pkg/unitsquare"
 )
 
-
 func InsideUnitCircle(p unitsquare.Point) bool {
 	return p.X*p.X+p.Y*p.Y <= 1
 }
