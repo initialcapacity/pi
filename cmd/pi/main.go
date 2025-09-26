@@ -6,6 +6,7 @@ import (
 
 	"github.com/tygern/pi/internal/cli"
 	"github.com/tygern/pi/pkg/pi"
+	"github.com/tygern/pi/pkg/unitsquare"
 )
 
 func main() {
@@ -16,6 +17,6 @@ func main() {
 	done := cli.ExecutionTimer("Estimation")
 	defer done()
 
-	pi, iterations := pi.Estimate(ctx, numberOfWorkers)
+	pi, iterations := pi.Estimate(ctx, unitsquare.GeneratePoints, numberOfWorkers)
 	fmt.Println(cli.Report(pi, int(iterations)))
 }
