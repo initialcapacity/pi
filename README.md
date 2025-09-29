@@ -40,3 +40,8 @@ Use the `--help` flag to see configuration options.
     ```shell
     go vet ./...
     ```
+
+1.  Generate new diagram for the readme
+    ```shell
+    go run ./cmd/generatediagram
+    ```
