@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/tygern/pi/internal/cli"
@@ -10,7 +11,7 @@ import (
 )
 
 func main() {
-	duration, numberOfWorkers := cli.ParseCommandLineArgs()
+	duration, numberOfWorkers := cli.ParseCommandLineArgs(os.Args[1:])
 
 	ctx, cancel := cli.SigtermTimeoutContext(time.Duration(duration) * time.Second)
 	defer cancel()

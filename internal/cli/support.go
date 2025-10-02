@@ -32,10 +32,12 @@ func SigtermTimeoutContext(timeout time.Duration) (context.Context, context.Canc
 	return ctx, cancel
 }
 
-func ParseCommandLineArgs() (duration, numberOfWorkers int) {
-	flag.IntVar(&duration, "d", 20, "execution duration in seconds")
-	flag.IntVar(&numberOfWorkers, "n", runtime.NumCPU(), "number of workers")
-	flag.Parse()
+func ParseCommandLineArgs(arguments []string) (duration, numberOfWorkers int) {
+	flagSet := flag.FlagSet{}
+	flagSet.IntVar(&duration, "d", 20, "execution duration in seconds")
+	flagSet.IntVar(&numberOfWorkers, "n", runtime.NumCPU(), "number of workers")
+	flagSet.Parse(arguments)
+
 	fmt.Printf("Running for %d seconds with %d workers\n", duration, numberOfWorkers)
 	return duration, numberOfWorkers
 }
