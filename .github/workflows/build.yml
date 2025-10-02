@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+      - name: Check formatting
+        run: |
+            gofmt -d .
+            go vet ./...
+      - name: Run tests
+        run: |
+          go test ./...
+      - name: Build
+        run: |
+          go build ./cmd/pi
+      - name: Save artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pi
+          path: pi
+  
