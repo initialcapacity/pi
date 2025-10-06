@@ -6,8 +6,8 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/tygern/pi/pkg/precise"
-	"github.com/tygern/pi/pkg/unitsquare"
+	"github.com/initialcapacity/pi/pkg/precise"
+	"github.com/initialcapacity/pi/pkg/unitsquare"
 )
 
 func InsideUnitCircle(p unitsquare.Point) bool {

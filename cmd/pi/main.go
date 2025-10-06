@@ -5,9 +5,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/tygern/pi/internal/cli"
-	"github.com/tygern/pi/pkg/pi"
-	"github.com/tygern/pi/pkg/unitsquare"
+	"github.com/initialcapacity/pi/internal/cli"
+	"github.com/initialcapacity/pi/pkg/pi"
+	"github.com/initialcapacity/pi/pkg/unitsquare"
 )
 
 func main() {

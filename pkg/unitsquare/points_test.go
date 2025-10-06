@@ -5,8 +5,8 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/tygern/pi/internal/assert"
-	"github.com/tygern/pi/pkg/unitsquare"
+	"github.com/initialcapacity/pi/internal/assert"
+	"github.com/initialcapacity/pi/pkg/unitsquare"
 )
 
 func TestGeneratePoints(t *testing.T) {

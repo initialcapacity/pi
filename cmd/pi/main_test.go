@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"testing"
 
-	"github.com/tygern/pi/internal/assert"
+	"github.com/initialcapacity/pi/internal/assert"
 )
 
 func TestIntegration(t *testing.T) {

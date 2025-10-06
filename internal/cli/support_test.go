@@ -3,8 +3,8 @@ package cli_test
 import (
 	"testing"
 
-	"github.com/tygern/pi/internal/assert"
-	"github.com/tygern/pi/internal/cli"
+	"github.com/initialcapacity/pi/internal/assert"
+	"github.com/initialcapacity/pi/internal/cli"
 )
 
 func TestParseCommandLineArgs(t *testing.T) {

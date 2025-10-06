@@ -3,8 +3,8 @@ package precise_test
 import (
 	"testing"
 
-	"github.com/tygern/pi/internal/assert"
-	"github.com/tygern/pi/pkg/precise"
+	"github.com/initialcapacity/pi/internal/assert"
+	"github.com/initialcapacity/pi/pkg/precise"
 )
 
 func TestDivideUint64(t *testing.T) {
