@@ -22,6 +22,9 @@ jobs:
       - name: Build
         run: |
           go build ./cmd/pi
+      - name: Run estimation
+        run: |
+          echo "$(./pi -d 10)" >> $GITHUB_STEP_SUMMARY
       - name: Save artifact
         uses: actions/upload-artifact@v4
         with:
